@@ -6,7 +6,6 @@ import qualified Data.ByteString.Char8           as C8
 import qualified Data.Digest.XXHash              as XX
 import qualified Data.Vector.Storable            as VS
 import qualified Data.Vector.Storable.ByteString as BS
-import qualified Data.ByteVector                 as BV
 import qualified Data.Vector.Storable.Mutable    as VM
 
 import Data.Word (Word8, Word32)
@@ -34,7 +33,7 @@ isSpecial c = c == sepChar || c == escapeChar
 fastEscape :: C8.ByteString -> Escaped
 fastEscape x =
     Escaped .
-        BV.fromByteVector $
+        BS.vectorToByteString $
             VS.create $ do
                 v <- VM.unsafeNew (countTot x + 1)
                 go v (C8.length x) 0 0
@@ -64,7 +63,7 @@ fastUnescape (Escaped bs) = do
     let len = C8.length bs
         escCount = countEscapes 0 len 0 
         newStrLen = len - escCount
-    BV.fromByteVector $ VS.create $ VM.unsafeNew newStrLen >>= \v -> go False v newStrLen 0 0
+    BS.vectorToByteString $ VS.create $ VM.unsafeNew newStrLen >>= \v -> go False v newStrLen 0 0
     where
     go esc v newStrLen i j
         | j == newStrLen = return v

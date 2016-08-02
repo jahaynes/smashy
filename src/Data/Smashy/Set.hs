@@ -2,16 +2,14 @@
 
 module Data.Smashy.Set where
 
-import qualified Data.ByteVector                 as BV
 import qualified Data.Vector.Storable            as VS
 import qualified Data.Vector.Storable.Mutable    as VM
-import Control.Monad                (foldM)
+import qualified Data.Vector.Storable.ByteString as BV
 import Data.Word
 
 import qualified System.Directory                as SD
 import qualified Data.Serialize                  as CE
 import qualified Data.ByteString.Char8           as C8
-import Control.Monad.Primitive  (PrimMonad, PrimState)
 
 import Data.Smashy.Types
 import Data.Smashy.Constants
@@ -239,7 +237,7 @@ getWord vm len a
             then return Nothing
             else do
                 buf <- VS.freeze . VM.slice a z $ vm
-                return (Just (Escaped $ BV.fromByteVector buf, a + z + 1))
+                return (Just (Escaped $ BV.vectorToByteString buf, a + z + 1))
         where
         nextWord' :: Bool -> Int -> IO Int
         nextWord' True z = nextWord' False (z+1)

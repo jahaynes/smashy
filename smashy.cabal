@@ -15,7 +15,7 @@ cabal-version:       >=1.10
 
 library
   exposed-modules:     Data.Smashy.Set, Data.Smashy.Map, Data.Smashy.Shared, Data.Smashy.Types, Data.Smashy.Constants, Data.Smashy.Util, Data.Smashy.Encoding
-  build-depends:       base >=4.6, primitive, vector, bytestring, directory, vector-mmap, cereal, spool, xxhash, mono-traversable
+  build-depends:       base, primitive, vector, bytestring, directory, vector-mmap, cereal, spool, xxhash, mono-traversable
   hs-source-dirs:      src
   default-language:    Haskell2010
   GHC-Options:         -O3 -Wall
